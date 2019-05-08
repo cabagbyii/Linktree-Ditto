@@ -97,77 +97,77 @@ $('.service_image').on('load', function(){
 	};
 });
 
-var Subctrl = (function () {
+/*var Subctrl = (function () {
 
-      // Instance stores a reference to the Singleton
-      var subctrlr;
-    
-      function init() {
-    
-        // Singleton
-    
-        // Private methods and variables
-        function privateMethod(){
-            console.log( "I am private" );
-        }
-    
-        var subscribeContainer = $('#signup_container');
-    
-        return {
-    
-          // Public methods and variables
-          isVisible: false,
-          fadeIn: function () {
-            if(!this.isVisible){
-                this.isVisible = true;
-                $('body').css('overflow', 'hidden');
-                subscribeContainer.css('display', 'flex');
-                subscribeContainer.animate({opacity: 1}, 600);
+          // Instance stores a reference to the Singleton
+          var subctrlr;
+        
+          function init() {
+        
+            // Singleton
+        
+            // Private methods and variables
+            function privateMethod(){
+                console.log( "I am private" );
             }
-          },
-          fadeOut: function () {
-            if(this.isVisible){
-                this.isVisible = false;
-                subscribeContainer.animate({opacity: 0}, 600, function(){
-                   subscribeContainer.css('display', 'none');
-                   $('body').css('overflow', 'auto'); 
-                });
+        
+            var subscribeContainer = $('#signup_container');
+        
+            return {
+        
+              // Public methods and variables
+              isVisible: false,
+              fadeIn: function () {
+                if(!this.isVisible){
+                    this.isVisible = true;
+                    $('body').css('overflow', 'hidden');
+                    subscribeContainer.css('display', 'flex');
+                    subscribeContainer.animate({opacity: 1}, 600);
+                }
+              },
+              fadeOut: function () {
+                if(this.isVisible){
+                    this.isVisible = false;
+                    subscribeContainer.animate({opacity: 0}, 600, function(){
+                       subscribeContainer.css('display', 'none');
+                       $('body').css('overflow', 'auto'); 
+                    });
+                }
+              }
+        
+              
+            };
+        
+          };
+        
+          return {
+        
+            // Get the Singleton instance if one exists
+            // or create one if it doesn't
+            getSubctrlr: function () {
+        
+              if ( !subctrlr ) {
+                subctrlr = init();
+              }
+        
+              return subctrlr;
             }
-          }
-    
-          
-        };
-    
-      };
-    
-      return {
-    
-        // Get the Singleton instance if one exists
-        // or create one if it doesn't
-        getSubctrlr: function () {
-    
-          if ( !subctrlr ) {
-            subctrlr = init();
-          }
-    
-          return subctrlr;
-        }
-    
-      };
-    
-    })();
-    
-    // Usage:
-    
-    var subctrlrA = Subctrl.getSubctrlr();
-    $( document ).ready(function() {
-        if(window.location.href.split('?')[1].split('=')[1] === 'true'){
-            subctrlrA.fadeIn();    
-        }
-    });
-    
-    
-  $('#subscribe_x').click(function(){
-      subctrlrA.fadeOut();
-  });
-  
+        
+          };
+        
+        })();*/
+
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+	  
+var currSbscrbr = new Sbscrbr({
+	'prompt':'Become one of the homies! Subscribe to the mailing list for news, exclusives, merch and more!'
+});
+
+if (getUrlParameter('subscribe') === 'true') {
+	currSbscrbr.show();
+}

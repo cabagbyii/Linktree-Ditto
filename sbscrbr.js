@@ -2,7 +2,7 @@
 	
 	//constructor
 	this.Sbscrbr = function(){
-		
+
 		// global element references
 		this.closeButton = null;
 		this.popupContainer = null;
@@ -20,19 +20,20 @@
 			submitButtonText:'Subscribe', // submit button text
 			minWidth:300, // minimum width of popup element
 			color:'#ffffff', // color of popup element background
-			bgColor:'rgba(0,0,0,.7)' // color of background overlay 
+			bgColor:'rgba(0,0,0,.7)', // color of background overlay
+			autoShow:false // show popup on load 
 		}
 
 		// Create options by extending defaults with the passed in arugments
 		if (arguments[0] && typeof arguments[0] === "object") {
 			this.options = extendDefaults(defaults, arguments[0]);
 		}
-
 	}
 
 	//Public Methods
 
 	Sbscrbr.prototype.show = function() {
+		// Build popup
 		buildPopup.call(this);
 	};
 
@@ -41,6 +42,7 @@
 	};
 
 	//Private Methods
+
 	function extendDefaults(source, props){
 		var prop;
 		for(prop in props){
@@ -55,8 +57,13 @@
 		//create popup container
 		this.popupContainer = document.createElement("div");
 		this.popupContainer.className = this.options.popupClass+'-container';
+		
+		//create bg overlay
 		if (this.options.bgOverlay === true) {
-			this.popupContainer.style.backgroundColor = this.options.bgColor;
+			this.bgOverlay = document.createElement("div");
+			this.bgOverlay.className = this.options.popupClass+"-bg-overlay";
+			this.bgOverlay.style.backgroundColor = this.options.bgColor;
+			this.popupContainer.appendChild(this.bgOverlay);
 		}
 
 		//create close button
@@ -70,6 +77,7 @@
 		this.popup = document.createElement("div");
 		this.popup.className = this.options.popupClass;
 		this.popup.id = 'mc_embed_signup';
+		this.popup.style.backgroundColor = this.options.color;
 		this.popup.innerHTML = 
 			'<form action="'+this.options.actionLink+'" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>' +
 	            '<div id="mc_embed_signup_scroll">' +
@@ -90,11 +98,6 @@
 	    this.popupContainer.appendChild(this.popup);
 
 	    document.body.appendChild(this.popupContainer);
-	}	
-
+	}
 
 }());
-
-var currSbscrbr = new Sbscrbr({
-	'prompt':'Become one of the homies! Subscribe to the mailing list for news, exclusives, merch and more!'
-});
