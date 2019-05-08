@@ -8,6 +8,9 @@
 		this.popupContainer = null;
 		this.popup = null;
 		this.bgOverlay = null;
+		this.state = {
+			showing:false
+		};
 
 		//option defaults
 
@@ -32,13 +35,30 @@
 
 	//Public Methods
 
+	Sbscrbr.prototype.isPageScrollable = function() {
+		if($('html').css('overflow') === 'auto' && $('body').css('overflow') === 'auto'){
+			return true
+		}
+		return false;
+	}
 	Sbscrbr.prototype.show = function() {
-		// Build popup
-		buildPopup.call(this);
+		if(!this.state.showing){
+			// Build popup
+			buildPopup.call(this);
+			initializeEvents.call(this);
+			this.state.showing = true;
+		}
 	};
 
 	Sbscrbr.prototype.hide = function() {
-		
+		if(this.state.showing){
+			popupAnimate('.'+this.popupContainer.className, {opacity:0}, 600);
+			this.state.showing = false;
+			if(!this.isPageScrollable()){
+				$('html').css('overflow', 'auto');
+				$('body').css('overflow', 'auto');
+			}
+		}
 	};
 
 	//Private Methods
@@ -51,6 +71,10 @@
 			}
 		}
 		return source;
+	}
+
+	function popupAnimate(ref, props, time){
+		$(ref).animate(props, time)
 	}
 
 	function buildPopup(){
@@ -98,6 +122,17 @@
 	    this.popupContainer.appendChild(this.popup);
 
 	    document.body.appendChild(this.popupContainer);
+	    popupAnimate('.'+this.popupContainer.className, {opacity:1}, 600);
 	}
+
+	function initializeEvents(){
+		if (this.closeButton) {
+			this.closeButton.addEventListener('click', this.hide.bind(this));
+		}
+		if (this.bgOverlay) {
+			this.bgOverlay.addEventListener('click', this.hide.bind(this));
+		}
+	}
+
 
 }());

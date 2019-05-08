@@ -21,33 +21,45 @@ var assetObj = {
 var isMobile = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i);
 var isApple = navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)/i);
 
-var load_checkpoints = 0;
-var loading_screen_catch = setTimeout(function(){
-	$('.loading_screen').hide();
-	$('html').css('overflow', 'auto');
-	$('body').css('overflow', 'auto');
-}, 10000);
-function load_checkpoint(trigger){
-	load_checkpoints+=1;
-	if (load_checkpoints >= 3 || (load_checkpoints >= 2 && isMobile)) {
-		$('.loading_screen').hide();
-		$('html').css('overflow', 'auto');
-		$('body').css('overflow', 'auto');
-		console.log('clearing loading_screen_catch timeout')
-		clearTimeout(loading_screen_catch);
-	}
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+var currSbscrbr = new Sbscrbr({
+	'prompt':'Become one of the homies! Subscribe to the mailing list for news, exclusives, merch and more!'
+});
+
+// Check if page has loaded
+
+if(document.readyState === 'complete') {
+    console.log('has loaded quickly!');
 }
+
+// Polling for the sake of my intern tests
+var interval = setInterval(function() {
+    if(document.readyState === 'complete') {
+        console.log('yes! page has loaded!');
+        clearInterval(interval);
+        $('.loading_screen').hide();
+        if (getUrlParameter('subscribe') === 'true') {
+        	currSbscrbr.show();
+        } else{
+        	$('html').css('overflow', 'auto');
+			$('body').css('overflow', 'auto');
+        }
+    }    
+}, 100);
+
+//end checking if page loaded
+
 function populate_main_info() {
-	var main_image_to_load = assetObj.main_image;
-	$('#main_image').attr("src", main_image_to_load);
-	$('#main_image').on('load', load_checkpoint('main_image'));
+	$('#main_image').attr("src", assetObj.main_image);
 	
-	var page_main_bg_image_to_load = assetObj.page_main_background;
-	$('<img/>').attr('src', page_main_bg_image_to_load).on('load', function() {
-		$(this).remove();
-		$('#page_main_background').css("backgroundImage", 'url('+page_main_bg_image_to_load+')');
-		load_checkpoint('bg');
-	});
+	$('#page_main_background').css("backgroundImage", 'url('+assetObj.page_main_background+')');
+
 	for (var infoKey in assetObj.main_info) {
 		var target_id = '#'+infoKey;
 		$(target_id).text(assetObj.main_info[infoKey]);
@@ -90,84 +102,3 @@ function myFunction() {
 }
 
 populate_main_info();
-
-$('.service_image').on('load', function(){
-	if(this.alt === 'amazon_music'){
-		load_checkpoint();
-	};
-});
-
-/*var Subctrl = (function () {
-
-          // Instance stores a reference to the Singleton
-          var subctrlr;
-        
-          function init() {
-        
-            // Singleton
-        
-            // Private methods and variables
-            function privateMethod(){
-                console.log( "I am private" );
-            }
-        
-            var subscribeContainer = $('#signup_container');
-        
-            return {
-        
-              // Public methods and variables
-              isVisible: false,
-              fadeIn: function () {
-                if(!this.isVisible){
-                    this.isVisible = true;
-                    $('body').css('overflow', 'hidden');
-                    subscribeContainer.css('display', 'flex');
-                    subscribeContainer.animate({opacity: 1}, 600);
-                }
-              },
-              fadeOut: function () {
-                if(this.isVisible){
-                    this.isVisible = false;
-                    subscribeContainer.animate({opacity: 0}, 600, function(){
-                       subscribeContainer.css('display', 'none');
-                       $('body').css('overflow', 'auto'); 
-                    });
-                }
-              }
-        
-              
-            };
-        
-          };
-        
-          return {
-        
-            // Get the Singleton instance if one exists
-            // or create one if it doesn't
-            getSubctrlr: function () {
-        
-              if ( !subctrlr ) {
-                subctrlr = init();
-              }
-        
-              return subctrlr;
-            }
-        
-          };
-        
-        })();*/
-
-function getUrlParameter(name) {
-    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-    var results = regex.exec(location.search);
-    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
-	  
-var currSbscrbr = new Sbscrbr({
-	'prompt':'Become one of the homies! Subscribe to the mailing list for news, exclusives, merch and more!'
-});
-
-if (getUrlParameter('subscribe') === 'true') {
-	currSbscrbr.show();
-}
