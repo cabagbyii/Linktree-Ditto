@@ -52,7 +52,9 @@
 
 	Sbscrbr.prototype.hide = function() {
 		if(this.state.showing){
-			popupAnimate('.'+this.popupContainer.className, {opacity:0}, 600);
+			$('.'+this.popupContainer.className).animate({opacity:0}, 600, function(){
+				$(this).css('display', 'none');
+			});
 			this.state.showing = false;
 			if(!this.isPageScrollable()){
 				$('html').css('overflow', 'auto');
@@ -71,10 +73,6 @@
 			}
 		}
 		return source;
-	}
-
-	function popupAnimate(ref, props, time){
-		$(ref).animate(props, time)
 	}
 
 	function buildPopup(){
@@ -122,7 +120,7 @@
 	    this.popupContainer.appendChild(this.popup);
 
 	    document.body.appendChild(this.popupContainer);
-	    popupAnimate('.'+this.popupContainer.className, {opacity:1}, 600);
+	    $('.'+this.popupContainer.className).animate({opacity:1}, 600);
 	}
 
 	function initializeEvents(){
