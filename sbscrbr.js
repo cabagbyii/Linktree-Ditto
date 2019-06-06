@@ -18,6 +18,7 @@
 			actionLink:'https://cee434.us20.list-manage.com/subscribe/post?u=367bd932af3cffb2c50abb080&amp;id=868c254e81',
 			closeButton:true, // button to close popup
 			bgOverlay:true, // backaground overlay
+			continuePrompt:true, // continue prompt to close overlay
 			popupClass:'sbscrbr-popup', // popup element class name
 			prompt:'', // subscribe prompt text
 			submitButtonText:'Subscribe', // submit button text
@@ -50,7 +51,7 @@
 		}
 	};
 
-	Sbscrbr.prototype.hide = function() {
+	Sbscrbr.prototype.hide = function(e) {
 		if(this.state.showing){
 			$('.'+this.popupContainer.className).animate({opacity:0}, 600, function(){
 				$(this).css('display', 'none');
@@ -60,6 +61,9 @@
 				$('html').css('overflow', 'auto');
 				$('body').css('overflow', 'auto');
 			}
+			var elName = e.target.className.split(this.options.popupClass+'-')[1];
+			console.log("ga('send', 'event', 'subscribe-prompt-closed', 'click', '"+elName+"');");
+			ga('send', 'event', 'subscribe-prompt-closed', 'click', elName);
 		}
 	};
 
@@ -114,12 +118,20 @@
 	        			'<div class="response" id="mce-success-response" style="display:none"></div>' +
 	        		'</div>' +
 	            	'<div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_367bd932af3cffb2c50abb080_868c254e81" tabindex="-1" value=""></div>' +
-	            	'<div class="clear"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>' + 
+	            	'<div class="clear submit-btn-container"><input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button"></div>' + 
 	            '</div>' +
 	        '</form>';
 	    this.popupContainer.appendChild(this.popup);
 
 	    document.body.appendChild(this.popupContainer);
+
+	    if (this.options.continuePrompt === true) {
+	    	this.continuePrompt = document.createElement("div");
+	    	this.continuePrompt.className = this.options.popupClass+"-continue-prompt";
+	    	this.continuePrompt.innerHTML = "or continue to website";
+	    	this.popupContainer.getElementsByClassName('submit-btn-container')[0].appendChild(this.continuePrompt);
+	    }
+
 	    $('.'+this.popupContainer.className).animate({opacity:1}, 600);
 	}
 
@@ -129,6 +141,9 @@
 		}
 		if (this.bgOverlay) {
 			this.bgOverlay.addEventListener('click', this.hide.bind(this));
+		}
+		if (this.continuePrompt) {
+			this.continuePrompt.addEventListener('click', this.hide.bind(this));
 		}
 	}
 

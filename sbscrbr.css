@@ -35,3 +35,10 @@
     min-width: 300px;
     z-index: 10001;
 }
+.sbscrbr-popup-continue-prompt {
+	display: inline-block;
+    line-height: 32px;
+    padding: 0px 20px;
+    text-decoration: underline;
+    cursor: pointer;
+}

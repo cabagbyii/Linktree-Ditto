@@ -448,7 +448,7 @@ outline: rgb(51, 51, 51) none 0px;
     background-color: rgb(94,22,124);
     display: flex;
     align-items: center;
-    z-index: 10000;
+    z-index: 20000;
     display: flex;
     align-items: center;
     justify-content: center;
