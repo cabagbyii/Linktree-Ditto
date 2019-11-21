@@ -109,7 +109,17 @@
 	            '<div id="mc_embed_signup_scroll">' +
 	        		'<h2>'+this.options.prompt+'</h2>' +
 	        		'<div class="indicates-required"><span class="asterisk">*</span> indicates required</div>' +
-	        			'<div class="mc-field-group">' +
+	        		'<div class="sbscrbr-name-container">'+
+		        		'<div class="mc-field-group sbscrbr-name-field sbscrbr-first-name">' +
+		        		    '<label for="mce-FNAME">First Name  <span class="asterisk">*</span></label>' +
+		        		    '<input type="text" value="" name="FNAME" class="required" id="mce-FNAME" aria-invalid="false">' +
+		        		'</div>' +
+		        		'<div class="mc-field-group sbscrbr-name-field sbscrbr-last-name">' +
+		        		    '<label for="mce-LNAME">Last Name  <span class="asterisk">*</span></label>' +
+		        		    '<input type="text" value="" name="LNAME" class="required" id="mce-LNAME" aria-invalid="false">'+
+		        		'</div>'+
+	        		'</div>'+
+	        		'<div class="mc-field-group">' +
 	        			'<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span></label>' +
 	        			'<input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">' + 
 	        		'</div>' +

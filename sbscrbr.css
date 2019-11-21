@@ -42,3 +42,16 @@
     text-decoration: underline;
     cursor: pointer;
 }
+.sbscrbr-name-container{
+	width: 96%;
+}
+.sbscrbr-name-field{
+	width: 48% !important;
+	display: inline-block;
+}
+.sbscrbr-first-name{
+	padding-right: 2%;
+}
+.sbscrbr-last-name{
+	padding-left: 2%;
+}
